@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block title %}通知方式查询{% endblock %}
+{% block navbar %}
+<section class="content-header">
+    <h1>通知方式查询</h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-dashboard"></i> 当前位置</li>
+        <li class="active">通知方式管理</li>
+        <li class="active">通知方式查询</li>
+    </ol>
+</section>
+{% endblock %}
 
 {% block content %}
-<form class="form-inline" method="post" role="form">
+<!-- <form method="post" action="/"  method = "post">
+  <div class="form-group">
+      <label>输入顾客id号查询 <font style="color:#a94442" size="2">
+      <input class="form-control" id="data" name="data">
+  </div>
+  <div class="form-group">
+      <button  type="submit" class="btn btn-default">Submit &nbsp</button>
+  </div>
+</form> -->
+ <!-- 搜索栏 -->
+ <form class="form-inline" method="post" role="form">
     {{ form.hidden_tag() }}
     {{ wtf.form_errors(form, hiddens="True") }}
     <div class="col-lg-6">
@@ -16,14 +37,16 @@
     </div>
 </form>
 
+<!-- 搜索栏结束 -->
+
 <div class="box box-primary">
     <div class="box-header with-border">
-        {% include 'msg.html' %}
+        {% include 'message.html' %}
     </div>
 
     <div class="box-body">
-        <table class="table table-striped table-condensed">
-            <thead>
+        {% if form%}
+        <table class="table table-bordered">
             <tr>
                 <th>订单号</th>
                 <th>零件</th>
@@ -41,11 +64,10 @@
                 <th>运输单位</th>
                 <th>运送方式</th>
                 <th>备注</th>
-                <th></th>
-                <th></th>
+                <th>编辑</th>
+                <th>删除</th>
             </tr>
-            </thead>
-            {% for lineitem in lineitems %}
+            {% for lineitem in lineitems   %}
             <tr>
                 <td>{{ lineitem.L_ORDERKEY }}</td>
                 <td>{{ lineitem.L_PARTKEY }}（{{ Part.query.filter_by(P_PARTKEY=partsupp.PS_PARTKEY).first().P_NAME }}）</td>
@@ -63,20 +85,46 @@
                 <td>{{ lineitem.L_SHIPINSTRUCT }}</td>
                 <td>{{ lineitem.L_SHIPMODE }}</td>
                 <td>{{ lineitem.COMMENT }}</td>
-                <td>
-                    <a class="fa fa-lg fa-edit text-yellow" href="{{ url_for('edit_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }}"></a>
-                </td>
-                <td>
-                    <a class="fa fa-lg fa-warning text-red" href="{{ url_for('delete_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }}"></a>
-                </td>
+               
+                <td><a class='fa fa-lg fa-edit text-light-blue'
+                       href="{{ url_for('edit_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }}"></a></td>
+                <td><a class='fa fa-lg fa-warning text-light-blue'
+                    href=" {{ url_for('delete_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }} "></a></td>
+                
             </tr>
             {% endfor %}
         </table>
-    </div>
-    <form action="/add_lineitem" method="post">
-        <input type="submit" value="增加记录">
+        {% endif %}
+
+
+
+    <form action='/add_lineitem' method="post">
+
+        <input type="submit" value="增加明细">
     </form>
-</div>
+
 {% endblock %}
-</body>
-</html>
+
+{% block scripts %}
+<script>
+    function initPage() {
+        slide_value = $(".slider").val() == "" ? 50 : parseInt($(".slider").val());
+        $(".slider").slider({
+            id: "blue",
+            max: 100,
+            value: slide_value
+        });
+
+        $('.status').bootstrapSwitch();
+        $(".status").on("switchChange.bootstrapSwitch", function (event, state) {
+            switchStatus($(this).data("id"), state, this);
+        });
+    }
+    function switchStatus(id, status, switchBox) {
+        restTemplate("PUT", "/notifies/" + id + "/status/" + status, null, function () {
+            $($(switchBox)).bootstrapSwitch("state", status);
+        });
+    }
+</script>
+
+{% endblock %}
