@@ -82,7 +82,7 @@
                 <li class="treeview">
                     <a href="">
                         <i class="fa fa-user"></i>
-                        <span>顾客管理</span>
+                        <span>零件管理</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
@@ -139,6 +139,26 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{ url_for('partsupp') }}"><i class="fa fa-circle-o"></i> 查询</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <span>顾客管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url_for('customer') }}"><i class="fa fa-circle-o"></i> 查询</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-cog"></i>
+                        <span>订单明细管理</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="#"><i class="fa fa-circle-o"></i> 查询</a></li>
                     </ul>
                 </li>
             </ul>
