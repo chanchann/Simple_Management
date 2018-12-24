@@ -70,8 +70,8 @@
             {% for lineitem in lineitems   %}
             <tr>
                 <td>{{ lineitem.L_ORDERKEY }}</td>
-                <td>{{ lineitem.L_PARTKEY }}（{{ Part.query.filter_by(P_PARTKEY=partsupp.PS_PARTKEY).first().P_NAME }}）</td>
-                <td>{{ lineitem.L_SUPPKEY }}（{{ Supplier.query.filter_by(S_SUPPKEY=partsupp.PS_SUPPKEY).first().S_NAME }}）</td>
+                <td>{{ lineitem.L_PARTKEY }}（{{ Part.query.filter_by(P_PARTKEY=lineitem.L_PARTKEY).first().P_NAME }}）</td>
+                <td>{{ lineitem.L_SUPPKEY }}（{{ Supplier.query.filter_by(S_SUPPKEY=lineitem.L_SUPPKEY).first().S_NAME }}）</td>
                 <td>{{ lineitem.L_LINENUMBER }}</td>
                 <td>{{ lineitem.L_QUANTITY }}</td>
                 <td>{{ lineitem.L_EXTENDEDPRICE }}</td>
@@ -87,9 +87,9 @@
                 <td>{{ lineitem.COMMENT }}</td>
                
                 <td><a class='fa fa-lg fa-edit text-light-blue'
-                       href="{{ url_for('edit_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }}"></a></td>
+                       href="{{ url_for('edit_lineitem', id1=lineitem.L_ORDERKEY, id2=lineitem.L_LINENUMBER) }}"></a></td>
                 <td><a class='fa fa-lg fa-warning text-light-blue'
-                    href=" {{ url_for('delete_lineitem', id1=lineitem.L_PARTKEY, id2=lineitem.L_SUPPKEY) }} "></a></td>
+                    href=" {{ url_for('delete_lineitem', id1=lineitem.L_ORDERKEY, id2=lineitem.L_LINENUMBER) }} "></a></td>
                 
             </tr>
             {% endfor %}
