@@ -7,8 +7,8 @@ from wtforms import StringField, SubmitField, IntegerField, SelectField, FloatFi
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 import os
-
-
+# from model import Part,Region,Nation,Customer,Supplier,Orders,Lineite
+from config import brand_choice,type_choice,container_choice
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 bootstrap = Bootstrap(app)
@@ -24,7 +24,6 @@ app.config['WTF_CSRF_SECRET_KEY'] = 'ysy'
 app.secret_key = 'ysy'
 
 db = SQLAlchemy(app)
-
 
 class Part(db.Model):
     __tablename__ = 'PART'
@@ -122,9 +121,7 @@ class Lineitem(db.Model):
     L_SHIPMODE = db.Column(db.String(25))
     L_COMMENT = db.Column(db.String(44))
 
-
 db.create_all()
-
 
 class Select(SelectField):
     def pre_validate(self, form):
@@ -136,17 +133,14 @@ class EditFormPart(FlaskForm):
     name = StringField('零件名称', validators=[])
     MFGR = StringField('MFGR', validators=[])
     brand = SelectField('商标', validators=[], render_kw={'class': 'form-control'},
-                        choices=[('微星', '微星'), ('惠普', '惠普'), ('方正', '方正'),
-                                 ('飞亚', '飞亚'), ('红磊', '红磊'), ('来福', '来福'),
-                                 ('TE', 'TE')],
-                        default='TE', coerce=str)
+                        choices = brand_choice,
+                        default='派大星', coerce=str)
     type = SelectField('型号', validators=[], render_kw={'class': 'form-control'},
-                        choices=[('普通零件', '普通零件'), ('电脑零件', '电脑零件'),
-                                ('汽车零件', '汽车零件')], default='汽车零件', coerce=str)
+                        choices = type_choice, default='齿轮零件', coerce=str)
     size = IntegerField('尺寸', validators=[])
     container = SelectField('包装容器', validators=[], render_kw={'class': 'form-control'},
-                            choices=[('一次性包装', '一次性包装'), ('周转包装', '周转包装')],
-                            default='周转包装', coerce=str)
+                            choices = container_choice,
+                            default='一次性包装', coerce=str)
     retailprice = FloatField('零售价', validators=[])
     comment = StringField('备注', validators=[])
     submit = SubmitField('提交')
