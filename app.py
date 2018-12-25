@@ -16,7 +16,6 @@ moment = Moment(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] =\
 # 	'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:897158608Ysy!@localhost/dbhomework'
-# app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:@localhost/tpc-h'
 app.config["SQLALCHEMY_COMMENT_ON_TEARDOWN"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
@@ -929,7 +928,7 @@ def delete_order(id):
 @app.route('/edit_order/<int:id>', methods=['GET', 'POST'])
 def edit_order(id):
     order = Orders.query.get(id)
-    form = EditFormPart(orderkey=order.O_ORDERKEY, custkey=order.O_CUSTKEY, orderstatus=order.O_ORDERSTATUS,
+    form = EditFormOrders(orderkey=order.O_ORDERKEY, custkey=order.O_CUSTKEY, orderstatus=order.O_ORDERSTATUS,
                         orderdate=order.O_ORDERDATE, orderpriority=order.O_ORDERPRIORITY, clerk=order.O_CLERK, shippriority=order.O_SHIPPRIORITY,
                         comment=order.O_COMMENT)
     if form.validate_on_submit():
@@ -973,7 +972,7 @@ def add_lineitem():
             lineitem = Lineitem(L_ORDERKEY=form.orderkey.data, L_PARTKEY=form.partkey.data,
                                 L_SUPPKEY=form.suppkey.data, L_LINENUMBER=form.linenumber.data,
                                 L_QUANTITY=form.quantity.data,
-                                L_EXTENDEDPRICE=form.quantity.data * Part.query.filter_by(P_PARTKEY=form.partkey.data).first().P_RETAILPRICE * form.discount.data,
+                                L_EXTENDEDPRICE = form.tax.data + form.quantity.data * Part.query.filter_by(P_PARTKEY=form.partkey.data).first().P_RETAILPRICE * form.discount.data ,
                                 L_DISCOUNT=form.discount.data, L_TAX=form.tax.data,
                                 L_RETURNFLAG=form.returnflag.data, L_LINESTATUS=form.linestatus.data,
                                 L_SHIPDATE=form.shipdate.data.strftime('%Y-%m-%d'), L_COMMITDATE=form.commitdate.data.strftime('%Y-%m-%d'),
