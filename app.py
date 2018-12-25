@@ -15,7 +15,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] =\
 # 	'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:###@localhost/dbhomework'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:897158608Ysy!@localhost/dbhomework'
 # app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:@localhost/tpc-h'
 app.config["SQLALCHEMY_COMMENT_ON_TEARDOWN"] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
